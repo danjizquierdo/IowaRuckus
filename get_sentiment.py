@@ -6,6 +6,7 @@ import config
 import datetime
 import re
 import logging
+from sys import argv
 
 logging.basicConfig(filename='errors.log', filemode='a+', format='%(asctime)s: %(message)s', level=logging.ERROR)
 
@@ -85,25 +86,12 @@ def listen(terms, amount):
     with open('users.json', 'a+') as u:
         json.dump(users, u, default=myconverter)
 
-    # for hash_tag in hash_tags:
-    #     for tweet in tweepy.Cursor(api.search, q=hash_tag, count=1000).items(1000):
-    #         if (not tweet.retweeted) and ('RT @' not in tweet.text):
-    #             # if tweet.lang == "en":
-    #                 twitter_users.append(tweet.user.name)
-    #                 tweet_time.append(tweet.created_at)
-    #                 tweet_string.append(tweet.text)
-    #                 if hash_tag:
-    #                     if isinstance(hash_tag, list):
-    #                         for tag in hash_tag: hash_tags.add(tag)
-    #                     else:
-    #                         hash_tags.add(hash_tag)
+class MyStreamListener(tweepy.StreamListener):
 
+    def on_status(self, status):
+        json.dump(status.text)
 
 if __name__ == "__main__":
-    listen([
-        '#Australia', '#AustralianFires', '#koala', '#AustraliaBurning',
-        '#ClimateActionNow', '#AustraliaBushFires', '#bushfirecrisis', '#canberra',
-        '#auspol', '#koalateelove', '#aussiemateship', '#Illridewithyou', '#sydneysmoke',
-        '#sydneyfires', '#nswfires', '#climatecrisis', '#straya', 'brushfire',
-        '#canberrasmoke', '#canberrafires', '#AustraliaBurns', '#namadgi'
-    ], 1000)
+    topics = argv[1:]
+    print(topics)
+    listen([str(topic) for topic in topics], 1000)
