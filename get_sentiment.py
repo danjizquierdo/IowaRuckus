@@ -79,8 +79,6 @@ def wordfrequency(series, top):
     return frequencies.most_common(top)
 
 
-
-
 def create_wordcloud(series, tag, *top):
     """ Take in a list of lists and create a WordCloud visualization for those terms.
     Parameters:
@@ -93,12 +91,12 @@ def create_wordcloud(series, tag, *top):
     vocab = tokenized(series)
     if not top[0]:
         top[0]=200
-    cloud=WordCloud(background_color='white', max_words=top[0], mask=mask).generate(' '.join([word for word in vocab]))
-    plt.imshow(cloud,interpolation='bilinear')
+    cloud = WordCloud(background_color='grey', max_words=top[0], mask=mask).generate(' '.join([word for word in vocab]))
+    plt.imshow(cloud, interpolation='bilinear')
     plt.title(f'Most Common words for {tag}')
     plt.plot(figsize = (48,24))
     plt.axis('off')
-    plt.tight_layout(pad=0)
+    # plt.tight_layout(pad=0)
     plt.show();
 
 def strip_tweets(tweet):
